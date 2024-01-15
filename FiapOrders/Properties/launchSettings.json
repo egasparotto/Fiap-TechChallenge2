@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "FiapOrders": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7148",
+      "environmentVariables": {
+        "FROM_SMTP": "FROM_SMTP",
+        "HOST_SMTP": "HOST_SMTP",
+        "PORT_SMTP": "PORT_SMTP",
+        "USER_SMTP": "USER_SMTP",
+        "PASSWORD_SMTP": "PASSWORD_SMTP"
+      }
+    }
+  }
+}
