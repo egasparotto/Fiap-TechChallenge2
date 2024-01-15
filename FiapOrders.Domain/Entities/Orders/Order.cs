@@ -8,10 +8,10 @@ namespace FiapOrders.Domain.Entities.Orders
 {
     public class Order
     {
-        public string? Name { get; set; }
-        public string? Email { get; set; }
+        public required string Name { get; set; }
+        public required string Email { get; set; }
         public decimal Total { get => (Items?.Sum(x => x.Total)).GetValueOrDefault(0); }
-        public IEnumerable<Item>? Items { get; set; }
+        public required IEnumerable<Item> Items { get; set; }
 
         public override string? ToString()
         {
