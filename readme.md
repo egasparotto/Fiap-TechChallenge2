@@ -1,5 +1,7 @@
 # FIAP ORDERS
 
+[![Deploy no Azure](https://github.com/egasparotto/Fiap-TechChallenge2/actions/workflows/FiapTechChallenge2.yml/badge.svg)](https://github.com/egasparotto/Fiap-TechChallenge2/actions/workflows/FiapTechChallenge2.yml)
+
 Projeto criado para o Tech Challenge da fase 2 do curso de pós graduação em **Arquitetura de Sistemas .NET com Azure**.
 Turma **2023/2**
 
@@ -11,6 +13,12 @@ O projeto também está hospedado no azure através da url https://fiaptechchall
 ## Processo
  ![Processo do serivço](https://raw.githubusercontent.com/egasparotto/Fiap-TechChallenge2/main/processo.png)
 
+
+## Continuous Deployment
+
+Sempre que é efetuado um novo push no projeto, é gerada uma nova versão e atualizado no Azure Functions.
+
+A Pipeline de deploy é executada através do github actions - [Ver Processo](https://github.com/egasparotto/Fiap-TechChallenge2/actions)
 
 ## Documentação da API
 

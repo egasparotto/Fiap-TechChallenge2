@@ -1,4 +1,4 @@
-name: Construir e implantar o aplicativo .NET Core para o Aplicativo de Função FiapTechChallenge2
+name: Deploy no Azure
 on:
   push:
     branches:
