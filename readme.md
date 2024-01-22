@@ -3,7 +3,7 @@
 [![Deploy no Azure](https://github.com/egasparotto/Fiap-TechChallenge2/actions/workflows/FiapTechChallenge2.yml/badge.svg)](https://github.com/egasparotto/Fiap-TechChallenge2/actions/workflows/FiapTechChallenge2.yml)
 
 Projeto criado para o Tech Challenge da fase 2 do curso de pós graduação em **Arquitetura de Sistemas .NET com Azure**.
-Turma **2023/2**
+Turma **2023/2 GRUPO 12**
 
 ## Sobre o projeto
 Fiap Orders é um serviço de processamento de pedidos. Desenvolvido em .NET 7.0 para ser utilizado no serviço serverless da microsoft (Azure Functions).
