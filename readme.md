@@ -97,3 +97,94 @@ Após a confirmação é enviado um email para o cliente, confirmando o pagament
 	"success": true
 }
 ```
+
+
+# Documentação do WorkFlow -Build e Deploy no Azure
+
+Este repositório utiliza GitHub Actions para automatizar o processo de compilação e implantação de uma Azure Function App. O fluxo de trabalho é dividido em duas etapas principais: `build` e `deploy`.
+
+### Detalhes do Fluxo de Trabalho
+
+#### Gatilho do Fluxo de Trabalho
+
+O fluxo de trabalho é acionado automaticamente quando há um push no ramo `main`.
+
+```yaml
+on:
+  push:
+    branches:
+    - main
+```
+
+#### Variáveis de Ambiente
+Variáveis de ambiente são configuradas para armazenar informações como nome da Function App, caminho do pacote, versão do .NET Core, etc.
+
+```yaml
+env:
+  AZURE_FUNCTIONAPP_NAME: FiapTechChallenge2
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: FiapOrders/published
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 7.0.x
+  WORKING_DIRECTORY: FiapOrders
+  DOTNET_CORE_VERSION_INPROC: 7.0.x
+```
+
+#### JOB de Build
+O job de build é responsável por compilar o projeto, restaurar dependências e gerar o pacote da Function App.
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+      - name: Setup .NET Core (for inproc extensions)
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_CORE_VERSION_INPROC }}
+      - name: Restore
+        run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+      - name: Build
+        run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+      - name: Publish
+        run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: functionapp
+          path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
+```
+
+#### JOB de Deploy
+O job de deploy faz o download do artefato gerado pelo trabalho de build e o utiliza para implantar a Function App no Azure.
+
+```yaml
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: functionapp
+          path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      - name: Deploy to Azure Function App
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          publish-profile: ${{ secrets.FiapTechChallenge2_23F8 }}
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
+```
+
+### Observações Importantes
+Certifique-se de configurar corretamente as variáveis de ambiente.
+
+* Certifique-se de configurar corretamente as variáveis de ambiente.
+* As credenciais sensíveis, como o perfil de publicação, devem ser configuradas como segredos no GitHub para proteger informações confidenciais.
+* Antes de executar este fluxo de trabalho, certifique-se de ter uma Azure Function App criada e pronta para receber a implantação.
